@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Path
 from typing import Union
 from pydantic import BaseModel
 from pydantic import EmailStr
+from typing import Annotated
 import uvicorn
 
 
@@ -63,7 +64,7 @@ def list_items():
 
 
 @app.get('/items/{item_id}')
-def read_item(item_id: int, q: Union[str, None] = None) -> dict:
+def read_item(item_id: Annotated[int, Path(ge=1, lt=1_000_000)], q: Union[str, None] = None) -> dict:
     return {'item_id': item_id, 'q': q}
 
 
