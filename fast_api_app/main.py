@@ -1,18 +1,13 @@
 from fastapi import FastAPI, Path
 from typing import Union
-from pydantic import BaseModel
-from pydantic import EmailStr
+from items_views import router as items_router
+from pydantic import EmailStr, BaseModel
 from typing import Annotated
 import uvicorn
 
 
 app = FastAPI()
-
-
-class Item(BaseModel):
-    name: str
-    price: float
-    is_offer: Union[bool, None] = None
+app.include_router(items_router, prefix='/items-router')
 
 
 class CreateUser(BaseModel):
@@ -52,25 +47,6 @@ def hello_species():
     return {
         'my_message': 'In Canada i see many species of dogs'
     }
-
-
-@app.get('/items/')
-def list_items():
-    return [
-        'item1',
-        'item2',
-        'item3'
-    ]
-
-
-@app.get('/items/{item_id}')
-def read_item(item_id: Annotated[int, Path(ge=1, lt=1_000_000)], q: Union[str, None] = None) -> dict:
-    return {'item_id': item_id, 'q': q}
-
-
-@app.put('/items/{item_id}')
-def update_item(item_id: int, item: Item):
-    return {'item_name': item.name, 'item_id': item_id}
 
 
 if __name__ == "__main__":
