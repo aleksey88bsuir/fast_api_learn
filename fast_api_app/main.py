@@ -1,17 +1,11 @@
-from fastapi import FastAPI, Path
-from typing import Union
+from fastapi import FastAPI
 from items_views import router as items_router
-from pydantic import EmailStr, BaseModel
-from typing import Annotated
+from users.views import router as users_router
 import uvicorn
 
-
 app = FastAPI()
-app.include_router(items_router, prefix='/items-router')
-
-
-class CreateUser(BaseModel):
-    email: EmailStr
+app.include_router(items_router)
+app.include_router(users_router)
 
 
 @app.get('/')
@@ -35,11 +29,6 @@ def calc(arg1: int, arg2: int):
             'b': arg2,
             'result': arg1 + arg2
             }
-
-
-@app.get('/users/')
-def create_users(user: CreateUser):
-    return {'message': f'user successful create, user email: {user.email}'}
 
 
 @app.get('/species')
