@@ -15,6 +15,7 @@ def hello_index():
     }
 
 
+
 @app.get('/hello/')
 def hello_name(name: str):
     name = name.strip().title()
