@@ -3,5 +3,5 @@
 .venv
 fast_api_app/helpful_materials.txt
 fast_api_app/Launch_server.bat
-key
+key.txt
 
