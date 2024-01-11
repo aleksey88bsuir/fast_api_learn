@@ -13,7 +13,6 @@ class DatabaseHelper:
         self.session_factory = async_sessionmaker(
             bind=self.engine,
             autoflush=False,
-            autocomit=False,
             expire_on_commit=False,
         )
 
@@ -24,9 +23,14 @@ class DatabaseHelper:
         return session
 
     async def session_dependency(self) -> AsyncSession:
-        async with self.get_scope_session() as session:
+        async with self.session_factory() as session:
             yield session
-            await session.remove()
+            await session.close()
+
+    async def scope_session_dependency(self) -> AsyncSession:
+        session = self.get_scope_session()
+        yield session
+        await session.close()
 
 
 db_helper = DatabaseHelper(
