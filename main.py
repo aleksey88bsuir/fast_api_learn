@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from items_views import router as items_router
-from users.views import router as users_router
+from fast_api_app.users.views import router as users_router
 import uvicorn
 
-# здесь оставляю комментарий
+
 app = FastAPI()
 app.include_router(items_router)
 app.include_router(users_router)
@@ -14,7 +14,6 @@ def hello_index():
     return {
         'my_message': 'Hello world!'
     }
-
 
 
 @app.get('/hello/')
