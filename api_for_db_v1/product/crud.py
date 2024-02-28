@@ -21,7 +21,7 @@ async def create_product(session: AsyncSession, product_in: ProductCreate) -> Pr
     product = Product(**product_in.model_dump())
     session.add(product)
     await session.commit()
-    # await session.refresh(product)
+    await session.refresh(product)
     return product
 
 
@@ -30,8 +30,9 @@ async def update_product(session: AsyncSession,
                          product_update: ProductUpdate) -> Product:
     for name, value in product_update.model_dump().items():
         setattr(product, name, value)
-        await session.commit()
-        return product
+    print(product)
+    await session.commit()
+    return product
 
 
 async def update_product_partial(session: AsyncSession,
