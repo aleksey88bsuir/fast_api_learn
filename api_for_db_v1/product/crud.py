@@ -30,18 +30,18 @@ async def update_product(session: AsyncSession,
                          product_update: ProductUpdate) -> Product:
     for name, value in product_update.model_dump().items():
         setattr(product, name, value)
-    print(product)
     await session.commit()
     return product
 
 
 async def update_product_partial(session: AsyncSession,
                                  product: Product,
-                                 product_update_partial: ProductUpdatePartial) -> Product:
-    for name, value in product_update_partial.model_dump(exclude_unset=True).items():
+                                 product_update_partial: ProductUpdatePartial,
+                                 partial: bool = True) -> Product:
+    for name, value in product_update_partial.model_dump(exclude_unset=partial).items():
         setattr(product, name, value)
-        await session.commit()
-        return product
+    await session.commit()
+    return product
 
 
 async def delete_product(session: AsyncSession,
