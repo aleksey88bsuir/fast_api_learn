@@ -9,7 +9,7 @@ print(BASE_DIR)
 class ConfigApp(BaseSettings):
     api_shop_router: str = "/shop_api"
     db_url: str = f"sqlite+aiosqlite:///{BASE_DIR}/shop.sqlite3"
-    db_echo: bool = True
+    db_echo: bool = False
 
 
 config = ConfigApp()
