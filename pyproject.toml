@@ -16,6 +16,9 @@ pydantic-settings = "^2.1.0"
 alembic = "^1.13.1"
 
 
+[tool.poetry.group.dev.dependencies]
+black = "^24.2.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
