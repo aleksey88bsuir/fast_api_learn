@@ -1,4 +1,4 @@
-git """create posts table
+"""create posts table
 
 Revision ID: 13d11e2055bc
 Revises: e2038025ff8a
