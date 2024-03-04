@@ -1,5 +1,5 @@
 from .base import Base
-from sqlalchemy import String, Text
+from sqlalchemy import String, Text, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 
@@ -9,4 +9,7 @@ class Post(Base):
                                       default='',
                                       server_default=''
                                       )
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id")
+    )
 
