@@ -4,14 +4,11 @@ from fast_api_app.users.views import router as users_router
 from api_for_db_v1 import router as api_shop_router
 from contextlib import asynccontextmanager
 from fast_api_app.core.settings import config
-from fast_api_app.core.models import Base, db_helper
 import uvicorn
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    async with db_helper.engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
     yield
 
 
