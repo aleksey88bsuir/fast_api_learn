@@ -105,6 +105,22 @@ async def get_users_with_posts_and_profiles(session: AsyncSession):
             print("-", post)
 
 
+async def get_profiles_with_users_and_users_with_posts(session: AsyncSession):
+    statement = (
+        select(Profile).
+        join(Profile.user).
+        options(joinedload(Profile.user).selectinload(User.posts)).
+        where(User.name == "Alex")
+        .order_by(Profile.user_id)
+    )
+    profiles = await session.scalars(statement)
+    for profile in profiles:
+        print(profile.user, profile.id and profile.first_name)
+        sorted_posts = sorted(profile.user.posts, key=lambda post: post.id)
+        for post in sorted_posts:
+            print("-", post)
+
+
 async def main():
     async with db_helper.session_factory() as session:
         # await create_user(session=session, username='Mike')
@@ -126,7 +142,8 @@ async def main():
         # await create_posts(session, user_alex.id, "Python", "C++", "Another language")
         # await get_users_with_posts_2(session=session)
         # await get_posts_with_author(session=session)
-        await get_users_with_posts_and_profiles(session=session)
+        # await get_users_with_posts_and_profiles(session=session)
+        await get_profiles_with_users_and_users_with_posts(session=session)
 
 
 if __name__ == "__main__":
