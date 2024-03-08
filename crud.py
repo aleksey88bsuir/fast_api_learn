@@ -121,29 +121,37 @@ async def get_profiles_with_users_and_users_with_posts(session: AsyncSession):
             print("-", post)
 
 
+async def main_relations(session):
+    await create_user(session=session, username='Mike')
+    await create_user(session=session, username='Alex')
+    user_mike = await get_user_by_username(session=session, username='Mike')
+    user_alex = await get_user_by_username(session=session, username="Alex")
+    await create_user_profile(session=session,
+                              user_id=user_alex.id,
+                              first_name="Alex",
+                              )
+    await create_user_profile(session=session,
+                              user_id=user_mike.id,
+                              first_name="Mihail",
+                              last_name="Ivanovich"
+                              )
+    await show_users_with_profiles(session=session)
+    await create_posts(session, user_mike.id, "WWW", "CCC")
+    await create_posts(session, user_alex.id, "Python", "C++", "Another language")
+    await get_users_with_posts_2(session=session)
+    await get_posts_with_author(session=session)
+    await get_users_with_posts_and_profiles(session=session)
+    await get_profiles_with_users_and_users_with_posts(session=session)
+
+
+async def demo_m2m(session: AsyncSession):
+    pass
+
+
 async def main():
     async with db_helper.session_factory() as session:
-        # await create_user(session=session, username='Mike')
-        # await create_user(session=session, username='Alex')
-        # print(await read_all_users(session=session))
-        # user_mike = await get_user_by_username(session=session, username='Mike')
-        # user_alex = await get_user_by_username(session=session, username="Alex")
-        # await create_user_profile(session=session,
-        #                           user_id=user_alex.id,
-        #                           first_name="Alex",
-        #                           )
-        # await create_user_profile(session=session,
-        #                           user_id=user_mike.id,
-        #                           first_name="Mihail",
-        #                           last_name="Ivanovich"
-        #                           )
-        # await show_users_with_profiles(session=session)
-        # await create_posts(session, user_mike.id, "WWW", "CCC")
-        # await create_posts(session, user_alex.id, "Python", "C++", "Another language")
-        # await get_users_with_posts_2(session=session)
-        # await get_posts_with_author(session=session)
-        # await get_users_with_posts_and_profiles(session=session)
-        await get_profiles_with_users_and_users_with_posts(session=session)
+        # await main_relations(session)
+        await demo_m2m(session)
 
 
 if __name__ == "__main__":
